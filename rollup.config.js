@@ -1,4 +1,6 @@
 import babel from 'rollup-plugin-babel';
+import flow from 'rollup-plugin-flow';
+import resolve from 'rollup-plugin-node-resolve';
 
 export default {
   input: 'src/index.js',
@@ -10,6 +12,15 @@ export default {
       name: 'moduleName',
     },
   ],
-  plugins: [babel()],
+  plugins: [
+    resolve({
+      module: true,
+      jsnext: true,
+      browser: true,
+    }),
+    flow(),
+    
+    babel(),
+    
+  ],
 };
-

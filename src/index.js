@@ -1,9 +1,5 @@
 // @flow
+import Action from './Action';
+import ActionFirst from './ActionFirst';
 
-class Stuff {
-  doStuff() {
-    return 'haha hello';
-  }
-}
-
-export { Stuff };
+export { Action, ActionFirst };

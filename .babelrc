@@ -1,0 +1,28 @@
+{
+    
+    "env": {
+        "dev": {
+            "presets": [
+                [
+                    "env",
+                    {
+                        "modules": false
+                    }
+                ]
+            ],
+            "plugins": [
+                "transform-object-rest-spread",
+                "external-helpers"
+            ]
+        },
+        "test": {
+            "presets": [
+                [
+                    "env"
+                ],
+                "flow"
+            ]
+        }
+    }
+    
+}
