@@ -129,10 +129,37 @@
     return ActionFirst;
   }(Action);
 
+  //      
+
+  var ActionForceFirst = function (_ActionFirst) {
+    inherits(ActionForceFirst, _ActionFirst);
+
+    function ActionForceFirst() {
+      classCallCheck(this, ActionForceFirst);
+      return possibleConstructorReturn(this, (ActionForceFirst.__proto__ || Object.getPrototypeOf(ActionForceFirst)).apply(this, arguments));
+    }
+
+    createClass(ActionForceFirst, [{
+      key: 'execute',
+      value: function execute(payload) {
+        if (this.executing) {
+          return this.promise;
+        }
+        this.executing = true;
+        this.promise = this._createRoutine(payload);
+        this.executingPayload = payload;
+        this.promise.then(this._reset.bind(this)).catch(this._reset.bind(this));
+        return this.promise;
+      }
+    }]);
+    return ActionForceFirst;
+  }(ActionFirst);
+
   //
 
   exports.Action = Action;
   exports.ActionFirst = ActionFirst;
+  exports.ActionForceFirst = ActionForceFirst;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

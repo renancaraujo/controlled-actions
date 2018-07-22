@@ -1,11 +1,11 @@
-import { ActionFirst } from '..';
+import { ActionForceFirst } from '..';
 
-describe('ActionFirst', () => {
+describe('ActionForceFirst', () => {
   let mockAction;
 
   beforeEach(() => {
     let counter = 0;
-    mockAction = new ActionFirst(({ resolve, reject, payload: { a } }) => {
+    mockAction = new ActionForceFirst(({ resolve, reject, payload: { a } }) => {
       setTimeout(() => {
         counter += 1;
         resolve(a + counter);
@@ -31,17 +31,17 @@ describe('ActionFirst', () => {
     expect(testvalue2).toEqual(1);
   });
 
-  it('multiple calls - should execute concurrenlty when different paylaods', async () => {
+  it('multiple calls - should hang on ongoing Promise when different paylaods', async () => {
     const promise1 = mockAction.execute({ a: 0 });
     const promise2 = mockAction.execute({ a: 1 });
-    expect(promise1 !== promise2).toBeTruthy();
+    expect(promise1 === promise2).toBeTruthy();
 
     let testvalue1, testvalue2;
     promise1.then(result => (testvalue1 = result));
     promise2.then(result => (testvalue2 = result));
     await Promise.all([promise1, promise2]);
     expect(testvalue1).toEqual(1);
-    expect(testvalue2).toEqual(3);
+    expect(testvalue2).toEqual(1);
   });
 
   it('should create new Promise after the previous resolved', async () => {
@@ -53,7 +53,7 @@ describe('ActionFirst', () => {
 
   it('should reject on trhow', () => {
     const mockError = new Error('eeee');
-    mockAction = new ActionFirst(({ resolve, reject }) => {
+    mockAction = new ActionForceFirst(({ resolve, reject }) => {
       throw mockError;
     });
     const promise1 = mockAction.execute({ a: 6 });
