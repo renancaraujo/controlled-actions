@@ -52,6 +52,16 @@
     return call && (typeof call === "object" || typeof call === "function") ? call : self;
   };
 
+  var toConsumableArray = function (arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  };
+
   //      
   var Action = function () {
     function Action(actionFunction) {
@@ -155,11 +165,91 @@
     return ActionForceFirst;
   }(ActionFirst);
 
+  //      
+
+  var ActionLast = function (_Action) {
+    inherits(ActionLast, _Action);
+
+    function ActionLast(actionFunction) {
+      classCallCheck(this, ActionLast);
+
+      var _this = possibleConstructorReturn(this, (ActionLast.__proto__ || Object.getPrototypeOf(ActionLast)).call(this, actionFunction));
+
+      _this.execute.bind(_this);
+      _this._executeListeners.bind(_this);
+      _this._executeRejectListeners.bind(_this);
+      _this.resolveListeners = [];
+      _this.rejectListeners = [];
+      return _this;
+    }
+
+    createClass(ActionLast, [{
+      key: '_executeListeners',
+      value: function _executeListeners(result) {
+        this.resolveListeners.map(function (resolveListener) {
+          resolveListener(result);
+        });
+
+        this.resolveListeners = [];
+        this.rejectListeners = [];
+      }
+    }, {
+      key: '_executeRejectListeners',
+      value: function _executeRejectListeners(error) {
+        this.rejectListeners.map(function (rejectListener) {
+          rejectListener(error);
+        });
+
+        this.resolveListeners = [];
+        this.rejectListeners = [];
+      }
+    }, {
+      key: 'execute',
+      value: function execute(payload) {
+        var _this2 = this;
+
+        var newLastPromise = this._createRoutine(payload);
+        this.lastPromise = newLastPromise;
+        newLastPromise.then(function (result) {
+          if (_this2.lastPromise === newLastPromise) {
+            _this2._executeListeners(result);
+          }
+        }).catch(function (e) {
+          if (_this2.lastPromise === newLastPromise) {
+            _this2._executeRejectListeners(e);
+          }
+        }).finally(function () {
+          if (_this2.lastPromise === newLastPromise) {
+            _this2.resolveListeners = [];
+            _this2.rejectListeners = [];
+          }
+        });
+
+        return new Promise(function (resolve, reject) {
+          try {
+            var newResolveListener = function newResolveListener(a) {
+              return resolve(a);
+            };
+            _this2.resolveListeners = [].concat(toConsumableArray(_this2.resolveListeners), [newResolveListener]);
+            var newRejectListener = function newRejectListener(a) {
+              return reject(a);
+            };
+            _this2.rejectListeners = [].concat(toConsumableArray(_this2.rejectListeners), [newRejectListener]);
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+    }]);
+    return ActionLast;
+  }(Action);
+
   //
 
   exports.Action = Action;
   exports.ActionFirst = ActionFirst;
   exports.ActionForceFirst = ActionForceFirst;
+  exports.ActionLast = ActionLast;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
