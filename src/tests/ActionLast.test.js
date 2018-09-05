@@ -5,11 +5,16 @@ describe('ActionLast', () => {
 
   beforeEach(() => {
     let counter = 0;
-    mockAction = new ActionLast(({ resolve, reject, payload: { a } }) => {
-      setTimeout(() => {
-        counter += 1;
-        resolve(a + counter);
-      }, 1);
+    const testPromise = a =>
+      new Promise(resolve => {
+        setTimeout(() => {
+          counter += 1;
+          resolve(a + counter);
+        }, 1);
+      });
+    mockAction = new ActionLast(async ({ a }) => {
+      const ret = await testPromise(a);
+      return ret;
     });
   });
 
@@ -57,7 +62,7 @@ describe('ActionLast', () => {
 
   it('should reject on throw', () => {
     const mockError = new Error('eeee');
-    mockAction = new ActionLast(({ resolve, reject }) => {
+    mockAction = new ActionLast(async () => {
       throw mockError;
     });
     const promise1 = mockAction.execute({ a: 6 });

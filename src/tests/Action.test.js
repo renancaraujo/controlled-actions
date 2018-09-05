@@ -2,14 +2,17 @@ import { Action } from '..';
 
 describe('Action', () => {
   let mockAction;
+  let mockSyncAction;
 
   beforeEach(() => {
     let counter = 0;
-    mockAction = new Action(({ resolve, reject, payload: { a } }) => {
-      setTimeout(() => {
-        counter += 1;
-        resolve(a + counter);
-      }, 1);
+    mockAction = new Action(({ a }) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          counter += 1;
+          resolve(a + counter);
+        }, 1);
+      });
     });
   });
 
@@ -53,7 +56,7 @@ describe('Action', () => {
 
   it('should reject on trhow', () => {
     const mockError = new Error('eeee');
-    mockAction = new Action(({ resolve, reject }) => {
+    mockAction = new Action(async () => {
       throw mockError;
     });
     const promise1 = mockAction.execute({ a: 6 });

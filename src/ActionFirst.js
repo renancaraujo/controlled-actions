@@ -10,13 +10,7 @@ export default class ActionFirst<PayloadType, ResolveType> extends Action<
   executingPayload: ?PayloadType;
   promise: Promise<ResolveType>;
 
-  constructor(
-    actionFunction: (obj: {
-      resolve: ResolveType => void,
-      reject: any => any,
-      payload: PayloadType,
-    }) => any
-  ) {
+  constructor(actionFunction: (payload: PayloadType) => Promise<ResolveType>) {
     super(actionFunction);
     this._reset.bind(this);
     this.execute.bind(this);

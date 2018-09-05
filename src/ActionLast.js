@@ -8,13 +8,7 @@ export default class ActionLast<PayloadType, ResolveType> extends Action<
   resolveListeners: Array<(ResolveType) => void>;
   rejectListeners: Array<(void) => void>;
   lastPromise: Promise<ResolveType>;
-  constructor(
-    actionFunction: (obj: {
-      resolve: ResolveType => void,
-      reject: any => any,
-      payload: PayloadType,
-    }) => any
-  ) {
+  constructor(actionFunction: (payload: PayloadType) => Promise<ResolveType>) {
     super(actionFunction);
     this.execute.bind(this);
     this._executeListeners.bind(this);

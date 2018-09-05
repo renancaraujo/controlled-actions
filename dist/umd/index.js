@@ -75,19 +75,8 @@
     createClass(Action, [{
       key: "_createRoutine",
       value: function _createRoutine(payload) {
-        var _this = this;
-
-        return new Promise(function (resolve, reject) {
-          try {
-            _this.actionFunction({
-              resolve: resolve,
-              reject: reject,
-              payload: payload
-            });
-          } catch (e) {
-            reject(e);
-          }
-        });
+        var returnedPromise = this.actionFunction(payload);
+        return Promise.resolve(returnedPromise);
       }
     }, {
       key: "execute",
