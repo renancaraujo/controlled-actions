@@ -1,6 +1,6 @@
 {
   "name": "controlled-actions",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Controleld actions gives a simple interface to control your javascript async routines. ",
   "main": "dist/umd/index.js",
   "scripts": {
