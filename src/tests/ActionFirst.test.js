@@ -5,11 +5,16 @@ describe('ActionFirst', () => {
 
   beforeEach(() => {
     let counter = 0;
-    mockAction = new ActionFirst(({ resolve, reject, payload: { a } }) => {
-      setTimeout(() => {
-        counter += 1;
-        resolve(a + counter);
-      }, 1);
+    const testPromise = a =>
+      new Promise(resolve => {
+        setTimeout(() => {
+          counter += 1;
+          resolve(a + counter);
+        }, 1);
+      });
+    mockAction = new ActionFirst(async ({ a }) => {
+      const ret = await testPromise(a);
+      return ret;
     });
   });
 
@@ -53,7 +58,7 @@ describe('ActionFirst', () => {
 
   it('should reject on trhow', () => {
     const mockError = new Error('eeee');
-    mockAction = new ActionFirst(({ resolve, reject }) => {
+    mockAction = new ActionFirst(async () => {
       throw mockError;
     });
     const promise1 = mockAction.execute({ a: 6 });
