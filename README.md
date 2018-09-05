@@ -4,6 +4,27 @@
 
 Controlled actions is a pack of helper classes that help you to control async routines that can be called multiple times. It is a wrapper over the Promise API.
 
+
+## Why
+
+When studying the flux spec, I started to implement it.
+I've imagined "actions" as simple async functions that performs some async routine and distribute side effects (such as application state changes). 
+
+In this scenario, Actions could be executed by everything that can dispatch an async routine, like API Calls, for instance.
+
+The first issues appeared when we had multiple components that called the same endpoint with the same params. Those components could dispatch Action executions at the same time. In order to prevent multiple backend calls with the same payload, I've created something like `ActionFirst`. As time passed, new types of concurrency treatment appeared, then has born `controlled-actions`.
+
+Since it relies only on the JS Promises API, it can be used anywhere it is supported. Node or the browser. Using React or any other UI Library.
+
+In some of my projects, I use it alongside mobx in a fancy redux-less flux implemmentation.
+
+## Alternatives
+
+As anything else related to software development, `controlled-actions` is not suitable for every project out there. Here are some aletrnativeas that may be more suitable for your project:
+
+- If you are using redux on your project, you can easily reproduce this concurrent handling behavior with [redux-saga](https://github.com/redux-saga/redux-saga).
+- [RxJS](https://rxjs-dev.firebaseapp.com/) can be a good alternative too, but be careful to not implement a overkill. Read more about it [here](https://rxjs-dev.firebaseapp.com/).
+
 ### Installing
 
 ```
@@ -61,26 +82,6 @@ const FetchImages = new ActionFirst(
   }
 )
 ```
-
-## Why
-
-When studying the flux spec, I started to implement it.
-I've imagined "actions" as simple async functions that performs some async routine and distribute side effects (such as application state changes). 
-
-In this scenario, Actions could be executed by everything that can dispatch an async routine, like API Calls, for instance.
-
-The first issues appeared when we had multiple components that called the same endpoint with the same params. Those components could dispatch Action executions at the same time. In order to prevent multiple backend calls with the same payload, I've created something like `ActionFirst`. As time passed, new types of concurrency treatment appeared, then has born `controlled-actions`.
-
-Since it relies only on the JS Promises API, it can be used anywhere it is supported. Node or the browser. Using React or any other UI Library.
-
-In some of my projects, I use it alongside mobx in a fancy redux-less flux implemmentation.
-
-## Alternatives
-
-As anything else related to software development, `controlled-actions` is not suitable for every project out there. Here are some aletrnativeas that may be more suitable for your project:
-
-- If you are using redux on your project, you can easily reproduce this concurrent handling behavior with [redux-saga](https://github.com/redux-saga/redux-saga).
-- [RxJS](https://rxjs-dev.firebaseapp.com/) can be a good alternative too, but be careful to not implement a overkill. Read more about it [here](https://rxjs-dev.firebaseapp.com/).
 
 
 ## How to use it
