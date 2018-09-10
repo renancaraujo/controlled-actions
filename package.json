@@ -1,6 +1,6 @@
 {
   "name": "controlled-actions",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Controleld actions gives a simple interface to control your javascript async routines. ",
   "main": "dist/umd/index.js",
   "scripts": {
@@ -37,6 +37,8 @@
     "babel-eslint": "^8.2.6",
     "babel-jest": "^23.4.0",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
@@ -51,10 +53,11 @@
     "prettier": "^1.13.7",
     "rollup": "^0.63.4",
     "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-flow": "^1.1.1",
     "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
-    "lodash.isequal": "^4.5.0"
+    "lodash": "^4.17.10"
   }
 }

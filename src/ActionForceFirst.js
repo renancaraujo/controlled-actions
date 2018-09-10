@@ -5,14 +5,14 @@ export default class ActionForceFirst<
   PayloadType,
   ResolveType
 > extends ActionFirst<PayloadType, ResolveType> {
-  execute(payload: PayloadType): Promise<ResolveType> {
-    if (this.executing) {
+  execute: PayloadType => Promise<ResolveType> = (payload: PayloadType) => {
+    if (this.promise) {
       return this.promise;
     }
-    this.executing = true;
-    this.promise = this._createRoutine(payload);
+    const promise = this._createRoutine(payload);
+    this.promise = promise;
     this.executingPayload = payload;
-    this.promise.then(this._reset.bind(this)).catch(this._reset.bind(this));
-    return this.promise;
-  }
+    promise.finally(this._reset);
+    return promise;
+  };
 }
