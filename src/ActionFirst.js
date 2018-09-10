@@ -1,6 +1,6 @@
 // @flow
 import Action from './Action';
-import isEqual from 'lodash/isequal';
+import isEqual from 'lodash/isEqual';
 
 export default class ActionFirst<PayloadType, ResolveType> extends Action<
   PayloadType,
