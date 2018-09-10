@@ -13,8 +13,7 @@
                 "transform-object-rest-spread",
                 "transform-class-properties",
                 "transform-es2015-classes",
-                "external-helpers",
-                
+                "external-helpers"
             ]
         },
         "test": {
@@ -23,6 +22,11 @@
                     "env"
                 ],
                 "flow"
+            ],
+            "plugins": [
+                "transform-object-rest-spread",
+                "transform-class-properties",
+                "transform-es2015-classes"
             ]
         }
     }
