@@ -1,37 +1,17 @@
 // @flow
 export default class Action<PayloadType, ResolveType> {
-  promise: Promise<ResolveType>;
-  actionFunction: (obj: {
-    resolve: ResolveType => void,
-    reject: any => any,
-    payload: PayloadType,
-  }) => any;
+  actionFunction: (payload: PayloadType) => Promise<ResolveType>;
 
-  constructor(
-    actionFunction: (obj: {
-      resolve: ResolveType => void,
-      reject: any => any,
-      payload: PayloadType,
-    }) => any
-  ) {
+  constructor(actionFunction: (payload: PayloadType) => Promise<ResolveType>) {
     this.actionFunction = actionFunction;
-    this._createRoutine.bind(this);
-    this.execute.bind(this);
   }
-  _createRoutine(payload: PayloadType): Promise<ResolveType> {
-    return new Promise((resolve, reject) => {
-      try {
-        this.actionFunction({
-          resolve,
-          reject,
-          payload,
-        });
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
-  execute(payload: PayloadType): Promise<ResolveType> {
+  _createRoutine: PayloadType => Promise<ResolveType> = (
+    payload: PayloadType
+  ) => {
+    const returnedPromise = this.actionFunction(payload);
+    return Promise.resolve(returnedPromise);
+  };
+  execute: PayloadType => Promise<ResolveType> = (payload: PayloadType) => {
     return this._createRoutine(payload);
-  }
+  };
 }

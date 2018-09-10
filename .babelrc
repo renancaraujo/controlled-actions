@@ -1,5 +1,4 @@
 {
-    
     "env": {
         "dev": {
             "presets": [
@@ -12,6 +11,8 @@
             ],
             "plugins": [
                 "transform-object-rest-spread",
+                "transform-class-properties",
+                "transform-es2015-classes",
                 "external-helpers"
             ]
         },
@@ -21,6 +22,9 @@
                     "env"
                 ],
                 "flow"
+            ],
+            "plugins": [
+                "transform-class-properties"
             ]
         }
     }

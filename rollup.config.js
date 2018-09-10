@@ -1,6 +1,7 @@
 import babel from 'rollup-plugin-babel';
 import flow from 'rollup-plugin-flow';
-import resolve from 'rollup-plugin-node-resolve';
+import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
 export default {
   input: 'src/index.js',
@@ -8,19 +9,21 @@ export default {
     {
       file: 'dist/umd/index.js',
       format: 'umd',
-      indent: '  ',
-      name: 'moduleName',
+      name: 'controlledtActions',
     },
   ],
   plugins: [
-    resolve({
-      module: true,
-      jsnext: true,
-      browser: true,
-    }),
     flow(),
-    
+    commonjs({
+      include: 'node_modules/**',
+      namedExports: {
+        'node_modules/lodash/isequal.js': ['isEqual'],
+      },
+    }),
+    nodeResolve({
+      jsnext: true,
+      main: true,
+    }),
     babel(),
-    
   ],
 };
